@@ -1,9 +1,10 @@
 #pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,fast-math")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+//#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
 #include<cstdio>
-#include<algorithm>
-#define int long long
+#include<iostream>
+#include<vector>
+#include<string>
 using namespace std;
 
 inline int read(){
@@ -11,13 +12,19 @@ inline int read(){
     char c=0;
     while(c<'0' || c>'9'){
         c=getchar();
-        if(c==-1){return -1;}
     }
     while(c>='0'&& c<='9'){
-        x=x*10+(c-'0');
+        x=(x<<3)+(x<<1)+(c-'0');
         c=getchar();
     }
     return x;
+}
+inline int read_command(){
+    string IN;
+    cin>>IN;
+    if(IN=="ENQUEUE"){return 1;}
+    if(IN=="DEQUEUE"){return -1;}
+    if(IN=="STOP"){return 0;}
 }
 inline void write(int x){
     if(x>=10){write(x/10);}
@@ -26,32 +33,39 @@ inline void write(int x){
 //--block
 
 signed main(){
-    int dat[605],N,K;
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int N,cases=0;
+    vector<vector<int>>dat(1000,vector<int>());
     while(N=read()){
-        if(N==-1){break;}
-        K=read();
-        int left=0,right=0;
-        for(int i=0;i<=N;i++){
-            dat[i]=read();
-            left=max(left,dat[i]);
-            right+=dat[i];
-        }
-        //-input
-        //do
-        while(left!=right){
-            int mid=(left+right)/2;
-            int day=0,cnt=0;
-            for(int i=0;i<=N;i++){
-                if(cnt+dat[i]>mid){
-                    cnt=dat[i];
-                    day++;
-                }else{cnt+=dat[i];}
+        putchar('S');
+        putchar('c');
+        putchar('e');
+        putchar('n');
+        putchar('a');
+        putchar('r');
+        putchar('i');
+        putchar('o');
+        putchar(' ');
+        putchar('#');
+        write(++cases);
+        putchar('\n');
+
+        for(int i=0;i<N;i++){
+            int T=read();
+            for(int j=0;j<T;j++){
+                dat[i].emplace_back(read());
             }
-            if(cnt>0){day++;}
-            if(day-1>K){left=mid+1;}
-            else{right=mid;}
         }
-        write(left);
+        //-init&input
+        //command
+        int check=1;
+        while(check=read_command()){
+            if(check==1){
+                int num=read();
+            }else if(check==-1){
+
+            }
+        }
         putchar('\n');
     }
     return 0;
