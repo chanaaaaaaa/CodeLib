@@ -1,12 +1,9 @@
-#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,fast-math")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
-#pragma comment(linker, "/stack:200000000")
+//#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,fast-math")
+//#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+//#pragma comment(linker, "/stack:200000000")
 #include<cstdio>
-#include<stdio.h>
-#include<cmath>
+#include<algorithm>
 #include<memory.h>
-#include<iostream>
-//prf do the any one or two cut between cut and cut and return the min cost
 using namespace std;
 
 int L,N,dp[55][55],cut[55];
@@ -28,30 +25,58 @@ inline void write(int x){
     putchar(x%10+'0');
 }
 
-int slove(int x,int y){
-    if(~dp[x][y]){return dp[x][y];}
-    if(x+1==y){return dp[x][y]=0;}
-    int price=0x7fffffff;
-    for(int i=x+1;i<y;i++){
-        price=min(price,slove(x,i)+slove(i,y));
-    }
-    return dp[x][y]=price-cut[x]+cut[y];
-}
 signed main(){
 
     while(L=read()){
-        if(L==0){break;}
         N=read();
-        if(N==0){write(0);continue;}
+
         memset(cut,0,sizeof(cut));
-        memset(dp,-1,sizeof(dp));
-        cut[0]=0;
+        memset(dp,0,sizeof(dp));
+
         for(int i=1;i<=N;i++){
             cut[i]=read();
         }
-        cut[N+1]=L;
-        printf("The minimum cutting is ");
-        write(slove(0,N+1));
+        cut[0]=0;
+        cut[++N]=L;
+        for(int i=0;i<=N;++i){
+            for(int j=0;j<=N;++j){
+                dp[i][j]=0x7fffffff;
+            }
+        }
+        for(int i=0;i<N;i++){
+            dp[i][i+1]=0;
+        }
+        for(int i=L;i>=0;i--){
+            for(int j=i+1;j<=N;j++){
+                for(int k=i+1;k<j;k++){
+                    dp[i][j]=min(dp[i][j],dp[i][k]+dp[k][j]+cut[j]-cut[i]);
+                }
+            }
+        }
+        putchar('T');
+        putchar('h');
+        putchar('e');
+        putchar(' ');
+        putchar('m');
+        putchar('i');
+        putchar('n');
+        putchar('i');
+        putchar('m');
+        putchar('u');
+        putchar('m');
+        putchar(' ');
+        putchar('c');
+        putchar('u');
+        putchar('t');
+        putchar('t');
+        putchar('i');
+        putchar('n');
+        putchar('g');
+        putchar(' ');
+        putchar('i');
+        putchar('s');
+        putchar(' ');
+        write(dp[0][N]);
         putchar('.');
         putchar('\n');
     }
