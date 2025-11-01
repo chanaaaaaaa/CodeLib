@@ -60,7 +60,7 @@ signed main(){
         //-init
         solve();
         write(Max);
-        if(T)putchar('\n');
+        putchar('\n');
     }
 
     return 0;
