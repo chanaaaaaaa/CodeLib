@@ -1,38 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+inline bool check(string A,string B){
+    string AA="",BB="";
+    for(int i=0;i<A.size();i++){if(A[i]!=' '){AA+=A[i];}}
+    for(int i=0;i<B.size();i++){if(B[i]!=' '){BB+=B[i];}}
+
+    return AA==BB;
+}
+
 int main(){
-    int num;
-    cin>>num;
+    int N;
+    cin>>N;
     cin.ignore();
-    for(int i=1;i<=num;i++){
+    for(int i=1;i<=N;i++){
         string team,judge;
-        int maxx;
         getline(cin,team);
         getline(cin,judge);
 
-        if(team.size()>judge.size()){
-            maxx=team.size();
-        }else{maxx=judge.size();}
-
-        int check=0;//0->AC/1->ERR_SPACE(32)/2->WA
-        int a=0,b=0;
-
-        for(int j=0;j<maxx;j++){
-            if(team[a]==judge[b]){
-                a++;
-                b++;
-            }else if(team[a]!=judge[b]){
-                if(team[a]=='/0'||judge[b]=='/0'){break;}
-                if(team[a]==' '){a++;check=1;}
-                else if(team[a]!=' ' && judge[b]!=' '){check=2;break;}
-            }
-        }
-        cout<<"Case "<<i<<": ";
-        if(check==0){cout<<"Yes";}
-        else if(check==1){cout<<"Output Format Error";}
-        else if(check==2){cout<<"Wrong Answer";}
-        cout<<"\n";
+        if(team==judge){cout<<"Case "<<i<<": Yes\n";}
+        else if(check(team,judge)){cout<<"Case "<<i<<": Output Format Error\n";}
+        else{cout<<"Case "<<i<<": Wrong Answer\n";}
     }
     return 0;
 }

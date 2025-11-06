@@ -34,10 +34,10 @@ inline void form(){
         if(primes.count(i)){continue;}
         int now;
         for(now=2;now<i;now++){
-
+            printf("%d-%d\n",i,now);
             if(solve(now,i,i)!=now){break;}
         }
-        printf("%d-%d\n",i,now);
+
         if(now==i){res.insert(i);}
     }
 }
