@@ -2,9 +2,9 @@
 //#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
 #include<cstdio>
-#include<set>
-#include<algorithm>
-#include<unordered_map>
+#include<climits>
+#include<vector>
+
 #define int long long
 using namespace std;
 
@@ -22,12 +22,31 @@ inline int read(){
     return x;
 }
 inline void write(int x){
-    if(x<0){putchar('-');x=-x;}
     if(x>=10){write(x/10);}
     putchar(x%10+'0');
 }
-
-
-signed main(void){
-
+//-block
+signed main(){
+    int N=read(),x=read(),cnt,res,l=0,r=1e18,mid;
+    vector<int>dat(N);
+    for(int i=0;i<N;++i){
+        dat[i]=read();
+    }
+    while(l<=r){
+        cnt=0;
+        mid=l+((r-l)>>1);
+        for(int &s:dat){
+            cnt+=mid/s;
+            if(cnt>=x){break;}
+        }
+        if(cnt>=x){
+            res=mid;
+            r=mid-1;
+        }else{
+            l=mid+1;
+        }
+    }
+    write(res);
+    putchar('\n');
+    return 0;
 }
