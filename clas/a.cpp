@@ -1,58 +1,64 @@
-#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,fast-math")
-//#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
-//#pragma comment(linker, "/stack:200000000")
-#include<cstdio>
-#include<algorithm>
-#include<vector>
+#include <iostream>
+#include <cstring>
+#include <vector>
+using namespace::std;
 
-#define MAXN 10000
-#define int long long
-using namespace std;
+// product = multiplicand * multiplier
+vector< int > multiplication( vector< int > multiplicand, vector< int > multiplier );
 
-inline int read(){
-    int x=0;
-    char c=0;
-    while(c<'0' || c>'9'){
-        c=getchar();
-        if(c==-1){return 0;}
-    }
-    while(c>='0' && c<='9'){
-        x=(x<<3)+(x<<1)+(c-'0');
-        c=getchar();
-    }
-    return x;
+int main()
+{
+   char strA[ 251 ], strB[ 251 ];
+
+   int T;
+   cin >> T;
+   for( int t = 0; t < T; ++t )
+   {
+      cin >> strA >> strB;
+
+      int multiplicandSize = strlen( strA );
+      vector< int > multiplicand( multiplicandSize );
+      for( int i = 0; i < multiplicandSize; ++i )
+         multiplicand[ i ] = strA[ multiplicandSize - 1 - i ] - '0';
+
+      int multiplierSize = strlen( strB );
+      vector< int > multiplier( multiplierSize );
+      for( int i = 0; i < multiplierSize; ++i )
+         multiplier[ i ] = strB[ multiplierSize - 1 - i ] - '0';
+
+      vector< int > product = multiplication( multiplicand, multiplier );
+
+      for( int i = product.size() - 1; i >= 0; i-- )
+         cout << product[ i ];
+      cout << endl;
+   }
 }
-inline void write(int x){
-    if(x>=10){write(x/10);}
-    putchar(x%10+'0');
-}
-//-block
-int N,M,C,cnt,res,pos;
-signed main(){
-    while(N=read()){
-        M=read();C=read();
-        vector<int>dat(N);
-        for(int i=0;i<N;++i){
-            dat[i]=read();
-        }
-        sort(dat.begin(),dat.end());
-        for(int i=0;i<N;++i){
-            dat.emplace_back(dat[i]);
-        }
 
-        pos=0;res=0;
-        for(int i=0;i<N;++i){
-            while(pos-i<C || pos-i<N && dat[pos+1]==dat[pos]){
-                ++pos;
-            }
-            cnt=dat[i+1]-dat[i];
-            if(i==N-1){
-                cnt=dat[0]+M-dat[N-1];
-            }
-            res+=cnt*(pos-i);
+// product = multiplicand * multiplier
+vector< int > multiplication( vector< int > multiplicand, vector< int > multiplier )
+{
+   if( ( multiplicand.size() == 1 && multiplicand[ 0 ] == 0 ) ||
+       ( multiplier.size() == 1 && multiplier[ 0 ] == 0 ) )
+   {
+      vector< int > product( 1 );
+      product[ 0 ] = 0;
+      return product;
+   }
+    int maxsize=multiplicand.size()+multiplier.size()+1;
+    vector<int>product(maxsize,0);
+    for(int i=0;i<multiplicand.size();++i){
+        for(int j=0;j<multiplier.size();++j){
+            product[i+j]+=multiplicand[i]*multiplier[j];
         }
-        write(res);
-        putchar('\n');
     }
-    return 0;
+    int carry=0;
+    for(int i=0;i<maxsize;++i){
+        product[i]+=carry;
+        carry=product[i]/10;
+        product[i]%=10;
+    }
+    while(product.size()>1 && product[product.size()-1]==0){
+        product.pop_back();
+    }
+    return product;
 }
