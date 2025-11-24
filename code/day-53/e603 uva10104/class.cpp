@@ -4,6 +4,7 @@
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("inilne")
 #pragma GCC optimize("-fgcse")
+#pragma GCC optimize("fast-math")
 #pragma GCC optimize("-fgcse-lm")
 #pragma GCC optimize("-fipa-sra")
 #pragma GCC optimize("-ftree-vrp")
