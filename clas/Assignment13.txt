@@ -1,0 +1,2268 @@
+Computer Programming I — Homework Assignment #13
+
+Problem: Design a UNI Air Domestic Flights Booking System
+
+Functions:
+Booking (訂票): Insert a new record into the binary file Reservations.dat. Any passenger cannot book twice the same flight on the same day.
+Booking inquiry (訂票紀錄查詢): Input an ID number, then display the reservation information of the passenger.
+Refund application (刪除訂票資料): Delete a record from the binary file Reservations.dat.
+Requirements:
+1.Global variables, except airportName , fullFare , discount and maxNumReservations, are not allowed.
+
+Remark: The flightNo is unique in each flight.
+
+The file record format of the file Reservations.dat:
+char flightNo[ 8 ];// Flight number
+char id[ 12 ];// ID number
+char name[ 8 ];// Name
+char mobile[ 12 ];// Mobile phone number
+char date[ 12 ];// Departure date
+int tickets[ 8 ];
+// tickets[ 0 ]: not used
+// tickets[ 1 ]: number of full fare tickets
+// tickets[ 2 ]: number of child tickets
+// tickets[ 3 ]: number of infant tickets
+// tickets[ 4 ]: number of senior citizen tickets
+// tickets[ 5 ]: number of impaired tickets
+// tickets[ 6 ]: number of impaired companion tickets
+// tickets[ 7 ]: number of military tickets
+
+The file record format of the file Flight Schedule.dat:
+char flightNo[ 8 ];// Flight number
+char aircraft[ 8 ];// aircraft model
+int departureAirport;// Departure airport code
+int arrivalAirport;// Arrival airport code
+char departureTime[ 8 ];// Departure time
+char arrivalTime[ 8 ];// Arrival time
+int dayWeek[ 7 ];         // the value of dayWeek[ i ] is 0 or 1
+   // dayWeek[ 0 ] == 1 if and only if the flight flies on Sunday
+   // dayWeek[ 1 ] == 1 if and only if the flight flies on Monday
+   // dayWeek[ 2 ] == 1 if and only if the flight flies on Tuesday
+   // dayWeek[ 3 ] == 1 if and only if the flight flies on Wednesday
+   // dayWeek[ 4 ] == 1 if and only if the flight flies on Thursday
+   // dayWeek[ 5 ] == 1 if and only if the flight flies on Friday
+   // dayWeek[ 6 ] == 1 if and only if the flight flies on Saturday
+
+The file record format of the file Flight Seats.dat:
+char date[ 12 ];// Date
+char flightNo[ 8 ];// Flight number
+int departureAirport;// Departure airport code
+int arrivalAirport;// Arrival airport code
+int availableSeats;// The number of available seats
+
+The screen dialog should appear as follows:
+Welcome to UNI Air Domestic Flights Booking System
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 1
+
+Departure airport:
+ 1. Taipei
+ 2. Taichung
+ 3. Chiayi
+ 4. Tainan
+ 5. Kaohsiung
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 1
+
+Arrival airport:
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 8
+
+Departure Date (Month):
+1. 2025-12
+2. 2026-1
+3. 2026-2
+4. 2026-3
+5. 2026-4
+6. 2026-5
+? 1
+
+Day (15 ~ 31): 15
+
+Taipei to Penghu / Depart date: 2025/12/15.
+
+Flight   Departure   Arrival   Fare   No. Available Seats
+  8605       08:00     08:50   2296                     8
+  8609       11:30     12:20   2296                     8
+  8615       15:40     16:30   2296                     2
+
+Flight number: 8615
+
+Number of infant tickets (0 ~ 2): 0
+
+Number of full fare tickets (0 ~ 2): 3
+
+Number of child tickets (0 ~ 2): 0
+
+Number of senior citizen tickets (0 ~ 2): 0
+
+Number of impaired tickets (0 ~ 2): 0
+
+Number of impaired companion tickets (0 ~ 2): 0
+
+Number of military tickets (0 ~ 2): 0
+
+You can books a maximum of 2 passengers ( including children ).
+
+Number of full fare tickets (0 ~ 2): 0
+
+Number of child tickets (0 ~ 2): 1
+
+Number of senior citizen tickets (0 ~ 2): 0
+
+Number of impaired tickets (0 ~ 2): 0
+
+Number of impaired companion tickets (0 ~ 2): 0
+
+Number of military tickets (0 ~ 2): 0
+
+Ticket information:
+
+Date: 2025/12/15
+Flight: B7-8615
+
+   Taipei -> Penghu
+    15:40    16:30
+
+             Child Fare  TWD 1722 x 1
+
+Total: 1722
+
+ID number: 99
+
+Name: 99
+
+Mobile: 99
+
+Booking completed!
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 4
+
+
+
+Welcome to UNI Air Domestic Flights Booking System
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 1
+
+Departure airport:
+ 1. Taipei
+ 2. Taichung
+ 3. Chiayi
+ 4. Tainan
+ 5. Kaohsiung
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 1
+
+Arrival airport:
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 7
+
+Departure Date (Month):
+1. 2025-12
+2. 2026-1
+3. 2026-2
+4. 2026-3
+5. 2026-4
+6. 2026-5
+? 1
+
+Day (15 ~ 31): 15
+
+Taipei to Taitung / Depart date: 2025/12/15.
+
+Flight   Departure   Arrival   Fare   No. Available Seats
+  8721       09:40     10:45   2460                     1
+  8725       13:30     14:35   2460                     7
+  8727       16:50     17:55   2460                     4
+
+Flight number: 8727
+
+Number of infant tickets (0 ~ 4): 0
+
+Number of full fare tickets (0 ~ 4): 2
+
+Number of child tickets (0 ~ 4): 0
+
+Number of senior citizen tickets (0 ~ 4): 0
+
+Number of impaired tickets (0 ~ 4): 0
+
+Number of impaired companion tickets (0 ~ 4): 0
+
+Number of military tickets (0 ~ 4): 0
+
+Ticket information:
+
+Date: 2025/12/15
+Flight: B7-8727
+
+   Taipei -> Taitung
+    16:50    17:55
+
+              Full Fare  TWD 2460 x 2
+
+Total: 4920
+
+ID number: 99
+
+Name: 99
+
+Mobile: 99
+
+Booking completed!
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 1
+
+Departure airport:
+ 1. Taipei
+ 2. Taichung
+ 3. Chiayi
+ 4. Tainan
+ 5. Kaohsiung
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 1
+
+Arrival airport:
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 7
+
+Departure Date (Month):
+1. 2025-12
+2. 2026-1
+3. 2026-2
+4. 2026-3
+5. 2026-4
+6. 2026-5
+? 1
+
+Day (15 ~ 31): 15
+
+Taipei to Taitung / Depart date: 2025/12/15.
+
+Flight   Departure   Arrival   Fare   No. Available Seats
+  8721       09:40     10:45   2460                     1
+  8725       13:30     14:35   2460                     7
+  8727       16:50     17:55   2460                     2
+
+Flight number: 8727
+
+Number of infant tickets (0 ~ 2): 0
+
+Number of full fare tickets (0 ~ 2): 0
+
+Number of child tickets (0 ~ 2): 0
+
+Number of senior citizen tickets (0 ~ 2): 0
+
+Number of impaired tickets (0 ~ 2): 0
+
+Number of impaired companion tickets (0 ~ 2): 0
+
+Number of military tickets (0 ~ 2): 0
+
+Your booking could not be completed!
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 3
+
+Enter ID number: 99
+
+
+1.  Ticket information:
+
+Date: 2025/12/15
+Flight: B7-8615
+
+   Taipei -> Penghu
+    15:00    15:50
+
+             Child Fare  TWD 1722 x 1
+
+Total: 1722
+
+
+2.  Ticket information:
+
+Date: 2025/12/15
+Flight: B7-8727
+
+   Taipei -> Taitung
+    16:50    17:55
+
+              Full Fare  TWD 2460 x 2
+
+Total: 4920
+
+Enter your choice: 2
+
+The seleted booking has been deleted.
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 1
+
+Departure airport:
+ 1. Taipei
+ 2. Taichung
+ 3. Chiayi
+ 4. Tainan
+ 5. Kaohsiung
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 1
+
+Arrival airport:
+ 6. Hualien
+ 7. Taitung
+ 8. Penghu
+ 9. Kinmen
+10. Beigan
+11. Nangan
+? 7
+
+Departure Date (Month):
+1. 2025-12
+2. 2026-1
+3. 2026-2
+4. 2026-3
+5. 2026-4
+6. 2026-5
+? 1
+
+Day (15 ~ 31): 15
+
+Taipei to Taitung / Depart date: 2025/12/15.
+
+Flight   Departure   Arrival   Fare   No. Available Seats
+  8721       09:40     10:45   2460                     1
+  8725       13:30     14:35   2460                     7
+  8727       16:50     17:55   2460                     4
+
+Flight number: 8727
+
+Number of infant tickets (0 ~ 4): 0
+
+Number of full fare tickets (0 ~ 4): 0
+
+Number of child tickets (0 ~ 4): 0
+
+Number of senior citizen tickets (0 ~ 4): 0
+
+Number of impaired tickets (0 ~ 4): 0
+
+Number of impaired companion tickets (0 ~ 4): 0
+
+Number of military tickets (0 ~ 4): 0
+
+Your booking could not be completed!
+
+Input your choice:
+1. Booking
+2. Booking enquiry
+3. Refund application
+4. End
+? 4
+
+
+
+Call Graph
+
+
+
+
+
+
+
+
+
+
+Full Fare
+
+Taipei
+Taichung
+Chiayi
+Tainan
+Kaohsiung
+Hualien
+Taitung
+Penghu
+Kinmen
+Beigan
+Nangan
+Taipei
+0
+0
+0
+0
+0
+1781
+2460
+2296
+2618
+2197
+2197
+Taichung
+0
+0
+0
+0
+0
+0
+0
+1769
+2236
+0
+2686
+Chiayi
+0
+0
+0
+0
+0
+0
+0
+1721
+2217
+0
+0
+Tainan
+0
+0
+0
+0
+0
+0
+0
+1697
+2231
+0
+0
+Kaohsiung
+0
+0
+0
+0
+0
+0
+0
+1876
+2393
+0
+0
+Hualien
+1781
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Taitung
+2460
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Penghu
+2296
+1769
+1721
+1697
+1876
+0
+0
+0
+1768
+0
+0
+Kinmen
+2618
+2236
+2217
+2231
+2393
+0
+0
+1768
+0
+0
+0
+Beigan
+2197
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Nangan
+2197
+2686
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+
+
+
+Airport code
+Code
+Airport
+機場
+1
+Taipei
+臺北
+2
+Taichung
+臺中
+3
+Chiayi
+嘉義
+4
+Tainan
+臺南
+5
+Kaohsiung
+高雄
+6
+Hualien
+花蓮
+7
+Taitung
+臺東
+8
+Penghu
+澎湖
+9
+Kinmen
+金門
+10
+Beigan
+北竿
+11
+Nangan
+南竿
+
+
+
+Flight Schedule.dat
+
+Flight No.
+Aircraft
+Departure airport
+Arrival airport
+Departure time
+Arrival time
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+8971
+AT7
+1
+6
+07:50
+08:40
+0
+0
+0
+0
+1
+0
+1
+8977
+AT7
+1
+6
+19:00
+19:50
+1
+0
+0
+0
+0
+1
+0
+8972
+AT7
+6
+1
+09:10
+09:50
+0
+0
+0
+0
+1
+0
+1
+8978
+AT7
+6
+1
+20:20
+21:00
+1
+0
+0
+0
+0
+1
+0
+8721
+AT7
+1
+7
+09:40
+10:45
+1
+1
+1
+1
+1
+1
+1
+8725
+AT7
+1
+7
+13:30
+14:35
+1
+1
+1
+1
+1
+1
+1
+8727
+AT7
+1
+7
+16:50
+17:55
+1
+1
+1
+1
+1
+1
+1
+8729
+AT7
+1
+7
+18:45
+19:50
+0
+0
+0
+0
+0
+1
+0
+8722
+AT7
+7
+1
+11:20
+12:20
+1
+1
+1
+1
+1
+1
+1
+8726
+AT7
+7
+1
+15:10
+16:10
+1
+1
+1
+1
+1
+1
+1
+8728
+AT7
+7
+1
+18:40
+19:40
+1
+1
+1
+1
+1
+1
+1
+8730
+AT7
+7
+1
+20:30
+21:30
+0
+0
+0
+0
+0
+1
+0
+8605
+A321
+1
+8
+08:00
+08:50
+0
+1
+1
+1
+1
+1
+1
+9105
+AT7
+1
+8
+09:50
+10:50
+1
+0
+0
+0
+0
+0
+0
+9105
+AT7
+1
+8
+10:30
+11:30
+0
+0
+0
+0
+1
+0
+1
+8609
+A321
+1
+8
+11:30
+12:20
+1
+1
+1
+1
+1
+1
+1
+8615
+A321
+1
+8
+15:00
+15:50
+1
+0
+0
+0
+0
+0
+0
+8615
+A321
+1
+8
+15:40
+16:30
+0
+1
+1
+1
+1
+1
+1
+8625
+A321
+1
+8
+18:30
+19:20
+1
+0
+0
+0
+0
+0
+0
+8606
+A321
+8
+1
+09:50
+10:40
+0
+1
+1
+1
+1
+1
+1
+8610
+A321
+8
+1
+13:20
+14:10
+1
+1
+1
+1
+1
+1
+1
+9106
+AT7
+8
+1
+15:40
+16:35
+1
+0
+0
+0
+1
+0
+1
+8616
+A321
+8
+1
+16:40
+17:30
+1
+0
+0
+0
+0
+0
+0
+8616
+A321
+8
+1
+17:20
+18:10
+0
+1
+1
+1
+1
+1
+1
+8626
+A321
+8
+1
+20:10
+21:00
+1
+0
+0
+0
+0
+0
+0
+8801
+A321
+1
+9
+07:00
+08:05
+1
+1
+1
+1
+1
+1
+1
+8809
+AT7
+1
+9
+09:00
+10:20
+1
+1
+0
+0
+0
+1
+0
+9205
+A321
+1
+9
+09:50
+10:55
+0
+0
+0
+0
+0
+1
+0
+9205
+A321
+1
+9
+10:00
+11:05
+0
+0
+0
+0
+0
+0
+1
+8811
+A321
+1
+9
+10:45
+11:50
+1
+1
+1
+1
+1
+1
+1
+8821
+A321
+1
+9
+13:50
+14:55
+1
+1
+1
+1
+1
+1
+1
+9207
+A321
+1
+9
+15:00
+16:05
+0
+0
+1
+0
+1
+0
+0
+9207
+A321
+1
+9
+15:40
+16:45
+1
+0
+0
+0
+0
+0
+0
+8835
+A321
+1
+9
+18:00
+19:05
+1
+1
+1
+1
+1
+1
+1
+8802
+A321
+9
+1
+08:55
+09:55
+1
+1
+1
+1
+1
+1
+1
+9206
+A321
+9
+1
+11:50
+12:50
+0
+0
+0
+0
+0
+1
+0
+9206
+A321
+9
+1
+11:55
+12:55
+0
+0
+0
+0
+0
+0
+1
+8812
+A321
+9
+1
+12:40
+13:40
+1
+1
+1
+1
+1
+1
+1
+8816
+AT7
+9
+1
+14:30
+15:40
+1
+1
+0
+0
+0
+1
+0
+8822
+A321
+9
+1
+15:50
+16:50
+1
+1
+1
+1
+1
+1
+1
+9208
+A321
+9
+1
+17:00
+18:00
+0
+0
+1
+0
+1
+0
+0
+9208
+A321
+9
+1
+17:40
+18:40
+1
+0
+0
+0
+0
+0
+0
+8836
+A321
+9
+1
+20:10
+21:10
+1
+1
+1
+1
+1
+1
+1
+8781
+AT7
+1
+10
+06:40
+07:35
+1
+1
+1
+1
+1
+1
+1
+8789
+AT7
+1
+10
+15:20
+16:15
+1
+1
+1
+1
+1
+1
+1
+8782
+AT7
+10
+1
+08:10
+09:00
+1
+1
+1
+1
+1
+1
+1
+8790
+AT7
+10
+1
+16:50
+17:40
+1
+1
+1
+1
+1
+1
+1
+8751
+AT7
+1
+11
+06:30
+07:25
+1
+1
+1
+1
+1
+1
+1
+8755
+AT7
+1
+11
+09:30
+10:25
+1
+1
+1
+1
+1
+1
+1
+8775
+AT7
+1
+11
+12:15
+13:10
+0
+1
+1
+1
+1
+0
+1
+8759
+AT7
+1
+11
+13:05
+14:00
+1
+1
+1
+1
+1
+1
+1
+8761
+AT7
+1
+11
+14:00
+14:55
+1
+1
+1
+1
+1
+1
+1
+8767
+AT7
+1
+11
+16:00
+16:55
+1
+1
+1
+1
+1
+1
+1
+8752
+AT7
+11
+1
+08:00
+08:50
+1
+1
+1
+1
+1
+1
+1
+8756
+AT7
+11
+1
+11:25
+12:15
+1
+1
+1
+1
+1
+1
+1
+8758
+AT7
+11
+1
+12:30
+13:20
+1
+1
+1
+1
+1
+1
+1
+8760
+AT7
+11
+1
+13:45
+14:35
+0
+1
+1
+1
+1
+0
+1
+8762
+AT7
+11
+1
+14:35
+15:25
+1
+1
+1
+1
+1
+1
+1
+8768
+AT7
+11
+1
+17:30
+18:20
+1
+1
+1
+1
+1
+1
+1
+8631
+AT7
+2
+8
+08:30
+09:15
+1
+1
+1
+1
+1
+1
+1
+8635
+AT7
+2
+8
+11:30
+12:15
+1
+1
+1
+1
+1
+1
+1
+8639
+A321
+2
+8
+15:10
+15:50
+1
+0
+0
+0
+0
+0
+0
+8639
+AT7
+2
+8
+15:10
+15:55
+0
+1
+1
+1
+1
+1
+1
+8651
+AT7
+2
+8
+18:00
+18:45
+1
+1
+1
+1
+1
+1
+1
+8632
+AT7
+8
+2
+10:00
+10:40
+1
+1
+1
+1
+1
+1
+1
+8636
+AT7
+8
+2
+13:00
+13:40
+1
+1
+1
+1
+1
+1
+1
+8640
+AT7
+8
+2
+16:30
+17:10
+0
+1
+1
+1
+1
+1
+1
+8640
+A321
+8
+2
+16:40
+17:20
+1
+0
+0
+0
+0
+0
+0
+8652
+AT7
+8
+2
+19:20
+20:00
+1
+1
+1
+1
+1
+1
+1
+8955
+AT7
+2
+9
+08:00
+09:05
+1
+1
+1
+1
+1
+0
+1
+8957
+A321
+2
+9
+11:20
+12:10
+0
+0
+0
+0
+0
+1
+0
+8957
+AT7
+2
+9
+11:20
+12:25
+1
+1
+1
+1
+1
+0
+1
+8961
+AT7
+2
+9
+14:20
+15:25
+1
+1
+1
+1
+1
+1
+1
+8965
+AT7
+2
+9
+17:35
+18:40
+0
+1
+1
+1
+1
+1
+1
+8965
+A321
+2
+9
+18:15
+19:05
+1
+0
+0
+0
+0
+0
+0
+8956
+AT7
+9
+2
+09:50
+10:50
+1
+1
+1
+1
+1
+0
+1
+8960
+A321
+9
+2
+13:30
+14:20
+0
+0
+0
+0
+0
+1
+0
+8960
+AT7
+9
+2
+13:30
+14:30
+1
+1
+1
+1
+1
+0
+1
+8962
+AT7
+9
+2
+16:00
+17:00
+1
+1
+1
+1
+1
+1
+1
+8966
+AT7
+9
+2
+19:30
+20:30
+0
+1
+1
+1
+1
+1
+1
+8966
+A321
+9
+2
+19:55
+20:45
+1
+0
+0
+0
+0
+0
+0
+8735
+AT7
+2
+11
+10:40
+11:45
+1
+1
+1
+1
+1
+1
+1
+8736
+AT7
+11
+2
+15:40
+16:45
+1
+1
+1
+1
+1
+1
+1
+8661
+AT7
+3
+8
+15:40
+16:10
+1
+1
+1
+1
+1
+1
+1
+8662
+AT7
+8
+3
+14:30
+15:00
+1
+1
+1
+1
+1
+1
+1
+8901
+AT7
+3
+9
+12:40
+13:30
+1
+1
+0
+0
+0
+1
+0
+8902
+AT7
+9
+3
+11:00
+11:55
+1
+1
+0
+0
+0
+1
+0
+8675
+AT7
+4
+8
+07:20
+07:50
+1
+1
+1
+1
+1
+1
+1
+8681
+AT7
+4
+8
+13:10
+13:40
+1
+1
+1
+1
+1
+1
+1
+8683
+AT7
+4
+8
+17:10
+17:40
+1
+1
+1
+1
+1
+1
+1
+8676
+AT7
+8
+4
+08:35
+09:10
+1
+1
+1
+1
+1
+1
+1
+8680
+AT7
+8
+4
+14:20
+14:55
+1
+1
+1
+1
+1
+1
+1
+8682
+AT7
+8
+4
+15:50
+16:25
+1
+1
+1
+1
+1
+1
+1
+8981
+AT7
+4
+9
+09:50
+10:40
+1
+1
+1
+1
+1
+1
+1
+8991
+AT7
+4
+9
+15:40
+16:30
+1
+1
+1
+1
+1
+1
+1
+8982
+AT7
+9
+4
+11:30
+12:25
+1
+1
+1
+1
+1
+1
+1
+8992
+AT7
+9
+4
+17:10
+18:05
+1
+1
+1
+1
+1
+1
+1
+8689
+AT7
+5
+8
+07:00
+07:40
+1
+1
+1
+1
+1
+1
+1
+8691
+A321
+5
+8
+08:00
+08:40
+0
+0
+0
+0
+0
+1
+1
+8695
+AT7
+5
+8
+09:50
+10:30
+1
+1
+1
+1
+1
+1
+0
+8697
+AT7
+5
+8
+10:50
+11:30
+1
+1
+1
+1
+1
+1
+1
+8701
+AT7
+5
+8
+13:00
+13:40
+1
+1
+1
+1
+1
+1
+1
+8707
+AT7
+5
+8
+14:30
+15:10
+1
+1
+1
+1
+1
+1
+1
+8715
+A321
+5
+8
+18:00
+18:40
+1
+1
+0
+0
+0
+1
+0
+8715
+AT7
+5
+8
+18:20
+19:00
+0
+0
+1
+1
+1
+0
+1
+8690
+AT7
+8
+5
+08:20
+09:00
+1
+1
+1
+1
+1
+1
+1
+8692
+A321
+8
+5
+09:30
+10:10
+0
+0
+0
+0
+0
+1
+1
+8696
+AT7
+8
+5
+11:10
+11:50
+1
+1
+1
+1
+1
+1
+1
+8698
+AT7
+8
+5
+12:30
+13:10
+1
+1
+1
+1
+1
+1
+1
+8710
+AT7
+8
+5
+16:50
+17:30
+1
+1
+1
+1
+1
+1
+1
+8712
+AT7
+8
+5
+18:30
+19:10
+1
+1
+1
+1
+1
+1
+1
+8716
+AT7
+8
+5
+19:30
+20:10
+0
+0
+1
+1
+1
+0
+1
+8716
+A321
+8
+5
+19:30
+20:10
+1
+1
+0
+0
+0
+1
+0
+8911
+AT7
+5
+9
+07:30
+08:35
+1
+1
+1
+1
+1
+1
+1
+8917
+A321
+5
+9
+11:10
+12:00
+1
+1
+1
+1
+1
+1
+1
+8921
+AT7
+5
+9
+14:00
+15:05
+1
+1
+1
+1
+1
+1
+0
+8927
+A321
+5
+9
+17:30
+18:20
+0
+0
+0
+0
+0
+0
+1
+8927
+AT7
+5
+9
+17:30
+18:35
+1
+1
+1
+1
+1
+1
+0
+8912
+AT7
+9
+5
+09:10
+10:10
+1
+1
+1
+1
+1
+1
+1
+8918
+A321
+9
+5
+13:10
+14:00
+1
+1
+1
+1
+1
+1
+1
+8922
+AT7
+9
+5
+15:40
+16:40
+1
+1
+1
+1
+1
+1
+0
+8928
+A321
+9
+5
+19:20
+20:10
+0
+0
+0
+0
+0
+0
+1
+8928
+AT7
+9
+5
+19:20
+20:20
+1
+1
+1
+1
+1
+1
+1
+8995
+AT7
+8
+9
+12:40
+13:20
+1
+0
+0
+0
+1
+0
+1
+8996
+AT7
+9
+8
+14:05
+14:50
+1
+0
+0
+0
+1
+0
+1
