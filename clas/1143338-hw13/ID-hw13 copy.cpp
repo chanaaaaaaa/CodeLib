@@ -1,8 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <ctime>
 #include <cstring>
+//#include <ctime>
 using namespace std;
 
 struct Date
@@ -282,23 +282,22 @@ void booking()
 void chooseArrivalAirport( int departureAirport, int &arrivalAirport )
 {
    do{
-      cout << "\nArrival airport:\n";
+      cout<<"choose ArrivalAirport:\n";
 
-      for( int i = 1; i <= 11; i++ )
-         if( i != departureAirport && fullFare[ departureAirport ][ i ] > 0 )
-            cout << setw( 2 ) << i << ". " << airportName[ i ] << endl;
-
-      cout << "? ";
-      cin >> arrivalAirport;
-
-   }while( arrivalAirport < 1 || arrivalAirport > 11 ||
-           arrivalAirport == departureAirport ||
-           fullFare[ departureAirport ][ arrivalAirport ] == 0 );
+      for(int i=1;i<=11;++i){
+         if(i!=departureAirport && fullFare[departureAirport][i] > 0){
+            cout<<setw(2)<<i<<". "<<airportName[i]<<'\n';
+         }
+      }
+      cout<<"?";
+      cin>>arrivalAirport;
+   }while(  arrivalAirport<1 || arrivalAirport>11 ||
+            arrivalAirport==departureAirport ||
+            fullFare[departureAirport][departureAirport]==0);
 }
 
 void inputDepartureDate( char date[], int &departureDayWeek )
 {
-   // Use fixed base date: 2025-12-15 (Monday)
    tm structuredTime;
    time_t rawTime = time( nullptr );
    localtime_s( &structuredTime, &rawTime );
@@ -307,93 +306,98 @@ void inputDepartureDate( char date[], int &departureDayWeek )
    int month = structuredTime.tm_mon + 1;
    int day = structuredTime.tm_mday;
 
-   cout << "\nDeparture Date (Month):\n";
+   cout<<"\nDeparture Date(Month):\n";
 
-   int months[ 6 ][ 2 ];
-   for( int i = 0; i < 6; i++ )
-   {
-      int m = month + i;
-      months[ i ][ 0 ] = year + ( m - 1 ) / 12;
-      months[ i ][ 1 ] = ( ( m - 1 ) % 12 ) + 1;
+   int months[6][2];
+   for(int i=0;i<6;++i){
+      int m=month+i;
+      months[i][0]=year+(m-1)/12;
+      months[i][1]=((m-1)%12)+12;
 
-      cout << i + 1 << ". " << months[ i ][ 0 ] << "-" << months[ i ][ 1 ] << endl;
+      cout<<i+1<<". "<<months[i][0]<<"-"<<months[i][1]<<'\n';
    }
 
    int choice;
    do{
-      cout << "? ";
-      cin >> choice;
-   }while( choice < 1 || choice > 6 );
+      cout<<"?";
+      cin>>choice;
+   }while(choice<1 || choice>6);
 
-   int departureYear = months[ choice - 1 ][ 0 ];
-   int departureMonth = months[ choice - 1 ][ 1 ];
+   int DepartureYear=months[choice-1][0];
+   int DepartureMonth=months[choice-1][1];
 
-   int daysOfMonth[ 13 ] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-   int endDay = daysOfMonth[ departureMonth ];
-   if( departureMonth == 2 && leapYear( departureYear ) )
-      endDay = 29;
+   int DaysOfMonth[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
+   int EndDay=DaysOfMonth[DepartureMonth];
+   if(DepartureMonth==2 && leapYear(DepartureYear)){
+      EndDay=29;
+   }
 
-   int startDay = 1;
-   if( departureYear == year && departureMonth == month )
-      startDay = day;
-
-   int departureDay;
+   int StartDay=1;
+   if(DepartureYear==year && DepartureMonth==month){
+      StartDay=day;
+   }
+   int DepartureDay=0;
    do{
-      cout << "\nDay (" << startDay << " ~ " << endDay << "): ";
-      cin >> departureDay;
-   }while( departureDay < startDay || departureDay > endDay );
+      cout << "\nDay (" << StartDay << " ~ " << EndDay << "): ";
+      cin >> DepartureDay;
+   }while( DepartureDay < StartDay || DepartureDay > EndDay );
 
-   // format: yyyy/m/d or yyyy/mm/dd (no leading zeros for month and day)
-   int pos = 0;
-   // year (always 4 digits)
-   date[ pos++ ] = char( departureYear / 1000 % 10 + '0' );
-   date[ pos++ ] = char( departureYear / 100 % 10 + '0' );
-   date[ pos++ ] = char( departureYear / 10 % 10 + '0' );
-   date[ pos++ ] = char( departureYear % 10 + '0' );
-   date[ pos++ ] = '/';
-   // month (no leading zero)
-   if( departureMonth >= 10 )
-      date[ pos++ ] = char( departureMonth / 10 + '0' );
-   date[ pos++ ] = char( departureMonth % 10 + '0' );
-   date[ pos++ ] = '/';
-   // day (no leading zero)
-   if( departureDay >= 10 )
-      date[ pos++ ] = char( departureDay / 10 + '0' );
-   date[ pos++ ] = char( departureDay % 10 + '0' );
-   date[ pos ] = '\0';
+   int pos=-1;
+   date[++pos]=char(DepartureYear/1000%10+'0');
+   date[++pos]=char(DepartureYear/100%10 +'0');
+   date[++pos]=char(DepartureYear/10%10  +'0');
+   date[++pos]=char(DepartureYear%10     +'0');
 
-   Date departureDate = { departureYear, departureMonth, departureDay };
-   Date currentDate = { year, month, day };
-   int diff = difference( departureDate, currentDate );
-   
-   int currentDayWeek = 1; // 2025-12-15 is Monday (tm_wday = 1, where 0 is Sunday)
-   departureDayWeek = ( currentDayWeek + diff ) % 7;
+   date[++pos]=char(DepartureMonth/10%10 +'0');
+   date[++pos]=char(DepartureMonth%10    +'0');
+   date[++pos]=char(DepartureDay/10%10   +'0');
+   date[++pos]=char(DepartureDay%10      +'0');
+
+   date[++pos]='\0';
+
+   Date DepartureDate = {DepartureYear,DepartureMonth,DepartureDay};
+   Date CurrentDate = {year,month,day};
+   int diff=difference(DepartureDate,CurrentDate);
+
+   Date GetDayWeek={2025,12,15};
+   int BaseDayWeek=1;
+   departureDayWeek=(BaseDayWeek+difference(DepartureDate,GetDayWeek))%7;
 }
 
 int difference( Date departureDate, Date currentDate )
 {
-   auto daysBeforeMonth = []( int year, int month )
-   {
-      int monthDays[ 13 ] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-      int days = 0;
-      for( int m = 1; m < month; ++m )
-      {
-         days += monthDays[ m ];
-         if( m == 2 && ( year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 ) ) )
-            days += 1;
+   int DaysOfMonth[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
+   int DepartureDays=departureDate.day;
+   int CurrentDays=currentDate.day;
+
+   for(int i=1;i<departureDate.year;++i){
+      if(leapYear(i)){
+         DepartureDays+=366;
+      }else{
+         DepartureDays+=365;
       }
-      return days;
-   };
+   }
+   for(int i=1;i<departureDate.month;++i){
+      DepartureDays+=DaysOfMonth[i];
+      if(i==2 && leapYear(departureDate.year)){
+         ++DepartureDays;
+      }
+   }
 
-   auto toDays = [&]( Date d )
-   {
-      int days = d.day + daysBeforeMonth( d.year, d.month );
-      for( int y = 1; y < d.year; ++y )
-         days += ( leapYear( y ) ? 366 : 365 );
-      return days;
-   };
-
-   return toDays( departureDate ) - toDays( currentDate );
+   for(int i=1;i<currentDate.year;++i){
+      if(leapYear(i)){
+         CurrentDays+=366;
+      }else{
+         CurrentDays+=365;
+      }
+   }
+   for(int i=1;i<currentDate.month;++i){
+      CurrentDays+=DaysOfMonth[i];
+      if(i==2 && leapYear(currentDate.year)){
+         ++CurrentDays;
+      }
+   }
+   return DepartureDays-CurrentDays;
 }
 
 bool leapYear( int year )
@@ -404,22 +408,21 @@ bool leapYear( int year )
 // load all flights from Flight Schedule.dat and put them into the array flights
 void loadFlightSchedules( Flight flights[], int &numFlights )
 {
-   ifstream inFile( "Flight Schedule.dat", ios::in | ios::binary );
-   numFlights = 0;
-   if( !inFile )
-   {
+   ifstream InFile("Flight Schedule.txt", ios::in | ios::binary);
+   
+   numFlights=0;
+   if(!InFile){
       return;
    }
-
+   
    Flight flight;
-   while( inFile.read( reinterpret_cast< char * >( &flight ), sizeof( Flight ) ) )
-   {
-      if( numFlights >= 19 )
+   while(InFile.read(reinterpret_cast<char*>(&flight),sizeof(Flight))){
+      if(numFlights>=19){
          break;
-      flights[ ++numFlights ] = flight;
+      }
+      flights[numFlights++]=flight;
    }
-
-   inFile.close();
+   InFile.close();
 }
 
 // load all flights from departureAirport to arrivalAirport,
@@ -427,57 +430,44 @@ void loadFlightSchedules( Flight flights[], int &numFlights )
 void loadFlightSchedules( Flight flights[], int &numFlights,
      int departureAirport, int arrivalAirport, int departureDayWeek )
 {
-   ifstream inFile( "Flight Schedule.dat", ios::in | ios::binary );
-   numFlights = 0;
-   if( !inFile )
-   { 
+   ifstream inFile("Flight Schedule.dat", ios::binary | ios::in);
+   numFlights=0;
+   if(!inFile){
       return;
    }
-
    Flight flight;
-   while( inFile.read( reinterpret_cast< char * >( &flight ), sizeof( Flight ) ) )
-   {
-      if( flight.departureAirport == departureAirport &&
-          flight.arrivalAirport == arrivalAirport &&
-          flight.dayWeek[ departureDayWeek ] == 1 )
-      {
-         if( numFlights >= 19 )
-            break;
-         flights[ ++numFlights ] = flight;
+   while(inFile.read(reinterpret_cast<char*>(&flight),sizeof(Flight))){
+      if(numFlights >= 19){
+          break;
       }
+      flights[++numFlights]=flight;
    }
-
    inFile.close();
 }
 
 void loadFlightSeats( FlightSeats flightSeats[], int &numFlightSeats, char departureDate[],
      int departureAirport, int arrivalAirport )
 {
-   ifstream inFile( "Flight Seats.dat", ios::in | ios::binary );
-   numFlightSeats = 0;
-   if( !inFile )
-   {
+   ifstream inFile("Flight Seats.dat", ios::binary | ios::in);
+   if(!inFile){
+      numFlightSeats=0;
       return;
    }
-
-   // initialize all seats to 0 to avoid garbage when no matched record
-   for( int i = 0; i < 20; ++i )
-      flightSeats[ i ].availableSeats = 0;
-
-   FlightSeats seat;
-   while( inFile.read( reinterpret_cast< char * >( &seat ), sizeof( FlightSeats ) ) )
-   {
-      if( strcmp( seat.date, departureDate ) == 0 &&
-          seat.departureAirport == departureAirport &&
-          seat.arrivalAirport == arrivalAirport )
-      {
-         if( numFlightSeats >= 19 )
-            break;
-         flightSeats[ ++numFlightSeats ] = seat;
-      }
+   for(int i=0;i<20;++i){
+      flightSeats[i].availableSeats=0;
    }
 
-   inFile.close();
+   numFlightSeats=0;
+   FlightSeats FS;
+   while(inFile.read(reinterpret_cast<char*>(&FS),sizeof(FlightSeats))){
+      if(strcmp(FS.date,departureDate)==0 &&
+         FS.arrivalAirport==arrivalAirport &&
+         FS.departureAirport==departureAirport)
+      {
+         if(numFlightSeats>=19){break;}
+         flightSeats[++numFlightSeats]=FS;
+      }
+   }
 }
 
 // display all flights from departureAirport to arrivalAirport
@@ -490,45 +480,31 @@ void displayFlights( const Flight flights[], int numFlights,
    cout << "Flight   Departure   Arrival   Fare   No. Available Seats\n";
 
    for( int i = 1; i <= numFlights; i++ )
-   {
-      // Find matching seat record by flight number
-      int seatIndex = 0;
-      for( int j = 1; j <= numFlightSeats; j++ )
-         if( strcmp( flights[ i ].flightNo, flightSeats[ j ].flightNo ) == 0 )
-         {
-            seatIndex = j;
-            break;
-         }
-
-      int availableSeats = ( seatIndex > 0 ) ? flightSeats[ seatIndex ].availableSeats : 0;
-      if(availableSeats > 0){
+      if( flightSeats[ i ].availableSeats  > 0 )
          cout << setw( 6 ) << flights[ i ].flightNo
-            << setw( 12 ) << flights[ i ].departureTime
-            << setw( 10 ) << flights[ i ].arrivalTime
-            << setw( 7 ) << fullFare[ departureAirport ][ arrivalAirport ]
-            << setw( 22 ) << availableSeats << endl;
-      }
-   }
+              << setw( 12 ) << flights[ i ].departureTime
+              << setw( 10 ) << flights[ i ].arrivalTime
+              << setw( 7 ) << fullFare[ departureAirport ][ arrivalAirport ]
+              << setw( 22 ) << flightSeats[ i ].availableSeats << endl;
 }
 
 // choose a flight by input its number, and assign the number to reservation.flightNo
 void chooseFlight( Reservation &reservation, const Flight flights[], int numFlights )
 {
-   char flightNo[ 8 ];
-   bool found = false;
+   char flightNo[8];
+   bool found=false;
 
    do{
-      cout << "\nFlight number: ";
-      cin >> flightNo;
-
-      for( int i = 1; i <= numFlights; ++i )
-         if( strcmp( flights[ i ].flightNo, flightNo ) == 0 )
-         {
-            found = true;
-            strcpy_s( reservation.flightNo, sizeof( reservation.flightNo ), flightNo );
+      cout<<"\nFlight Number:";
+      cin>>flightNo;
+      for(int i=0;i<=numFlights;++i){
+         if(strcmp(flights[i].flightNo,flightNo)==0){
+            found=true;
+            strcpy_s(reservation.flightNo,sizeof(reservation.flightNo),flightNo);
             break;
          }
-   }while( !found );
+      }
+   }while(!found);
 }
 
 // input the number of tickets for each ticket type, and assign them to reservation.tickets
@@ -593,32 +569,27 @@ void inputNumTickets( Reservation &reservation, FlightSeats flightSeats[], int &
 
 void modifyFlightSeatsFile( Reservation &reservation, int totalNumTickets )
 {
-   fstream inOutFile( "Flight Seats.dat", ios::in | ios::out | ios::binary );
-
-   if( !inOutFile )
-   {
-      cerr << "File could not be opened." << endl;
+   fstream File("Flight Seats.dat", ios::in | ios::out | ios::binary);
+   if(!File){
+      cerr<<"Cant Open Flight Seats.dat\n";
       return;
    }
-
-   FlightSeats seat;
-   while( inOutFile.read( reinterpret_cast< char * >( &seat ), sizeof( FlightSeats ) ) )
-   {
-      if( strcmp( seat.date, reservation.date ) == 0 &&
-          strcmp( seat.flightNo, reservation.flightNo ) == 0 )
+   
+   FlightSeats SF;
+   while(File.read(reinterpret_cast<char *>(&SF),sizeof(FlightSeats))){
+      if(strcmp(SF.date,reservation.date)==0 &&
+         strcmp(SF.flightNo,reservation.flightNo))
       {
-         seat.availableSeats -= totalNumTickets;
-         if( seat.availableSeats < 0 )
-            seat.availableSeats = 0;
-
-         inOutFile.seekp( -static_cast< long >( sizeof( FlightSeats ) ), ios::cur );
-         inOutFile.write( reinterpret_cast< char * >( &seat ), sizeof( FlightSeats ) );
-         inOutFile.close();
+         SF.availableSeats-=totalNumTickets;
+         if(SF.availableSeats<0){
+            SF.availableSeats=0;
+         }
+         File.seekp(-static_cast<long>(sizeof(FlightSeats)),ios::cur);
+         File.write(reinterpret_cast<char*>(&SF),sizeof(FlightSeats));
+         File.close();
          return;
       }
    }
-
-   inOutFile.close();
 }
 
 void displayReservation( const Reservation reservation,
@@ -663,106 +634,96 @@ void displayReservation( const Reservation reservation,
 // append reservation to the end of Reservations.dat
 void saveReservation( const Reservation reservation )
 {
-   // check duplicate
-   Reservation reservations[ maxNumReservations ];
+   Reservation reservations[maxNumReservations];
    int numReservations;
-   loadReservations( reservations, numReservations );
+   loadReservations(reservations,numReservations);
 
-   int totalNumTickets = 0;
-   for( int i = 1; i <= 7; ++i )
-      totalNumTickets += reservation.tickets[ i ];
-
-   for( int i = 1; i <= numReservations; ++i )
-      if( strcmp( reservations[ i ].flightNo, reservation.flightNo ) == 0 &&
-          strcmp( reservations[ i ].id, reservation.id ) == 0 &&
-          strcmp( reservations[ i ].date, reservation.date ) == 0 )
+   int TotalNumTickets=0;
+   for(int i=1;i<=7;++i){
+      TotalNumTickets+=reservation.tickets[i];
+   }
+   for(int i=1;i<=numReservations;++i){
+      if(reservations[i].date==reservation.date &&
+         reservations[i].flightNo==reservation.flightNo &&
+         reservations[i].id==reservation.id)
       {
-         cout << "\nYou have already booked this flight on the same day.\n";
-         // restore seats that had been deducted
-         if( totalNumTickets > 0 )
-         {
-            Reservation temp = reservation;
-            modifyFlightSeatsFile( temp, -totalNumTickets );
+         cout<<"you are already book this in this day\n";
+         if(TotalNumTickets>0){
+            Reservation temp=reservation;
+            modifyFlightSeatsFile(temp,-TotalNumTickets);
          }
          return;
       }
-
-   ofstream outFile( "Reservations.dat", ios::out | ios::app | ios::binary );
-
-   if( !outFile )
-   {
-      cerr << "File could not be opened." << endl;
-      return;
    }
 
-   outFile.write( reinterpret_cast< const char * >( &reservation ), sizeof( Reservation ) );
-   outFile.close();
+   ofstream OutFile("Reservations.dat", ios::out | ios::app | ios::binary);
+   if(!OutFile){
+      cerr<<"Cant Open Reservation.dat\n";
+      return;
+   }
+   OutFile.write(reinterpret_cast<const char*>(&reservation),sizeof(Reservation));
 }
 
 // perform booking inquiry
 bool bookingInquiry( const char id[] )
 {
-   Reservation reservations[ maxNumReservations ];
-   int numReservations = 0;
-   loadReservations( reservations, numReservations );
+   Reservation reservations[maxNumReservations];
+   int numRervations=0;
+   loadReservations(reservations,numRervations);
 
-   Flight flights[ 20 ];
-   int numFlights = 0;
-   loadFlightSchedules( flights, numFlights );
+   Flight flights[20];
+   int numFlights=0;
+   loadFlightSchedules(flights,numFlights);
 
-   bool found = false;
-   int count = 0;
+   bool found=false;
+   int count=0;
 
-   for( int i = 1; i <= numReservations; ++i )
-      if( strcmp( reservations[ i ].id, id ) == 0 )
-      {
-         if( !found )
-            cout << "\n";
-         found = true;
+   for(int i=1;i<=numRervations;++i){
+      if(strcmp(reservations[i].id,id)==0){
+         if(!found){
+            cout<<'\n';
+            found=true;
+         }
 
-         bool flightFound = false;
-         for( int j = 1; j <= numFlights; ++j )
-            if( strcmp( flights[ j ].flightNo, reservations[ i ].flightNo ) == 0 )
-            {
-               flightFound = true;
+         bool flightfound=false;
+         for(int j=1;j<numFlights;++j){
+            if(strcmp(flights[i].flightNo,reservations[i].flightNo)==0){
+               flightfound=true;
                break;
             }
-
-         if( !flightFound )
-         {
-            ifstream inFile( "Flight Schedule.dat", ios::in | ios::binary );
-            if( inFile )
-            {
-               Flight tempFlight;
-               while( inFile.read( reinterpret_cast< char * >( &tempFlight ), sizeof( Flight ) ) )
-                  if( strcmp( tempFlight.flightNo, reservations[ i ].flightNo ) == 0 )
-                  {
-                     if( numFlights < 19 )
-                        flights[ ++numFlights ] = tempFlight;
-                     else
-                        flights[ 19 ] = tempFlight;
-                     flightFound = true;
-                     break;
-                  }
-               inFile.close();
+         }
+         if(!flightfound){
+            ifstream InFile("Flight Schedule.dat", ios::in | ios::binary);
+            if(!InFile){
+               cerr<<"Cant Open Flight Schedule.dat\n";
+               return;
             }
+            Flight tempflights;
+            while(InFile.read(reinterpret_cast<char*>(&tempflights),sizeof(Flight))){
+               if(strcmp(tempflights.flightNo,reservations[i].flightNo)==0){
+                  if(numFlights<19){
+                     flights[++numFlights]=tempflights;
+                  }else{
+                     flights[19]=tempflights;
+                  }
+                  flightfound=true;
+                  break;
+               }
+            }
+            InFile.close();
          }
-
-         if( flightFound )
-         {
-            cout << "\n" << ++count << ".  ";
-            displayReservation( reservations[ i ], flights, numFlights );
+         if(flightfound){
+            cout<<'\n'<<++count<<". ";
+            displayReservation(reservations[i],flights,numFlights);
+         }else{
+            cerr<<"\nError Flight: "<<reservations[i].flightNo<<" Not found!\n";
          }
-         else
-            cerr << "\nError: Flight " << reservations[ i ].flightNo << " not found!\n";
       }
-
-   if( !found )
-   {
-      cout << "\nNo reservations!\n";
+   }
+   if(!found){
+      cout<<"\nNo reservations!\n";
       return false;
    }
-
    return true;
 }
 
@@ -784,51 +745,43 @@ void refundApplication()
    Reservation reservations[ maxNumReservations ];
    int numReservations;
    loadReservations( reservations, numReservations );
-
-   // Find matching reservations and their indices
-   int matchingIndices[ maxNumReservations ];
-   int count = 0;
-   for( int i = 1; i <= numReservations; ++i )
-      if( strcmp( reservations[ i ].id, id ) == 0 )
-         matchingIndices[ ++count ] = i;
-
-   // Validate choice
-   if( choice < 1 || choice > count )
-   {
+   //
+   int matchingIndices[maxNumReservations];
+   int count=0;
+   for(int i=1;i<=numReservations;++i){
+      if(strcmp(reservations[i].id,id)==0){
+         matchingIndices[++count]=i;
+      }
+   }
+   //
+   if(choice<1 || choice>6){
       cout << "\nInvalid reservation number. Refund failed!\n";
       return;
    }
-
-   // Get the reservation to be deleted
-   int targetIndex = matchingIndices[ choice ];
-   Reservation targetReservation = reservations[ targetIndex ];
-
-   // Calculate total number of tickets
-   int totalNumTickets = 0;
-   for( int i = 1; i < 8; i++ )
-      totalNumTickets += targetReservation.tickets[ i ];
-
-   // Release seats by adding them back (pass negative value)
-   if( totalNumTickets > 0 )
-      modifyFlightSeatsFile( targetReservation, -totalNumTickets );
-
-   // Delete the reservation record
-   fstream inOutFile( "Reservations.dat", ios::in | ios::out | ios::binary );
-
-   if( !inOutFile )
-   {
-      cerr << "File could not be opened." << endl;
+   //
+   int targetIndex=matchingIndices[choice];
+   Reservation targetReservaion=reservations[targetIndex];
+   //
+   int TotalNumTickets=0;
+   for(int i=1;i<8;++i){
+      TotalNumTickets+=targetReservaion.tickets[i];
+   }
+   if(TotalNumTickets>0){
+      modifyFlightSeatsFile(targetReservaion,-TotalNumTickets);
+   }
+   //
+   fstream File("Reservations.dat", ios::in | ios::out | ios::binary);
+   if(!File){
+      cerr<<"Cant Open Reservation.dat\n";
       return;
    }
-
-   Reservation emptyReservation = { "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0 };
-
-   // Calculate file position (array index starts from 1, file position starts from 0)
-   streampos pos = ( targetIndex - 1 ) * sizeof( Reservation );
-   inOutFile.seekp( pos );
-   inOutFile.write( reinterpret_cast< const char * >( &emptyReservation ), sizeof( Reservation ) );
-   inOutFile.flush();
-   inOutFile.close();
+   
+   Reservation EmptyReservation={"","","","","",0,0,0,0,0,0,0,0};
+   streampos pos=(targetIndex-1)*sizeof(Reservation);
+   File.seekp(pos);
+   File.write(reinterpret_cast<const char*>(&EmptyReservation),sizeof(Reservation));
+   File.flush();
+   File.close();
 
    cout << "\nThe seleted booking has been deleted.\n";
 }
@@ -836,25 +789,22 @@ void refundApplication()
 // load all reservations from Reservations.dat and put them to the array reservations
 void loadReservations( Reservation reservations[], int &numReservations )
 {
-   ifstream inFile( "Reservations.dat", ios::in | ios::binary );
+   ifstream InFile("Reservation.dat", ios::in | ios::binary);
 
-   if( !inFile )
-   {
-      numReservations = 0;
+   numReservations=0;
+   if(!InFile){
       return;
    }
 
-   numReservations = 0;
    Reservation reservation;
-   while( inFile.read( reinterpret_cast< char * >( &reservation ), sizeof( Reservation ) ) )
-   {
-      if( reservation.flightNo[ 0 ] == '\0' )
+   while(InFile.read(reinterpret_cast<char*>(&reservation),sizeof(Reservation))){
+      if(reservation.id == '\0'){
          continue;
-
-      if( numReservations >= maxNumReservations - 1 )
+      }
+      if(numReservations >= maxNumReservations-1){
          break;
-      reservations[ ++numReservations ] = reservation;
+      }
+      reservations[++numReservations]=reservation;
    }
-
-   inFile.close();
+   InFile.close();
 }
