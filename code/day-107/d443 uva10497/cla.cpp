@@ -49,17 +49,18 @@
 using namespace std;
 
 inline int read(){
-    int x=0;
+    int x=0,w=1;
     char c=0;
-    while(c<'0'||c>'9'){
+    while(c<'0' || c>'9'){
         c=getchar();
+        if(c=='-'){w=-1;}
         if(c==-1){return 0;}
     }
-    while(c>='0'&&c<='9'){
+    while(c>='0' && c<='9'){
         x=(x<<3)+(x<<1)+(c-'0');
         c=getchar();
     }
-    return x;
+    return x*w+1;
 }
 inline void write(int x){
     if(x>=10){write(x/10);}
@@ -67,9 +68,40 @@ inline void write(int x){
 }
 //-block
 signed main(){
+    vector<vector<int>>dat;
+    dat.assign(801,{});
+    dat[1].emplace_back(0);
+    dat[2].emplace_back(1);
+    for(int i=3;i<=800;++i){
+        dat[i].assign(dat[i-1].begin(),dat[i-1].end());
+        for(int j=0;j<dat[i].size();++j){
+            if(j>=dat[i-2].size()){
+                dat[i][j]*=(i-1);
+            }else{
+                dat[i][j]=(dat[i][j]+dat[i-2][j])*(i-1);
+            }
+        }
+        for(int j=0;j<dat[i].size();++j){
+            if(j==dat[i].size()-1){
+                if(dat[i][j]>=10){
+                    dat[i].emplace_back(dat[i][j]/10);
+                }
+            }else{
+                dat[i][j+1]+=dat[i][j]/10;
+            }
+            dat[i][j]%=10;
+        }
+        while(dat[i][dat[i].size()-1]==0 && dat[i].size() > 1){
+            dat[i].pop_back();
+        }
+    }
+
     int N;
     while(N=read()){
-
+        for(int i=dat[N-1].size()-1;i>=0;--i){
+            write(dat[N-1][i]);
+        }
+        putchar('\n');
     }
-	return 0;
+    return 0;
 }
