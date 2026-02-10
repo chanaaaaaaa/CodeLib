@@ -45,63 +45,43 @@
 //#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
 #include <cstdio>
-#include <memory.h>
-#define int unsigned long long
 using namespace std;
 
 inline int read(){
-    int x=0;
+    int x=0,w=1;
     char c=0;
     while(c<'0'||c>'9'){
         c=getchar();
+        if(c=='-'){w=-1;}
         if(c==-1){return 0;}
     }
     while(c>='0'&&c<='9'){
         x=(x<<3)+(x<<1)+(c-'0');
         c=getchar();
     }
-    return x;
+    return x*w;
 }
 inline void write(int x){
     if(x>=10){write(x/10);}
     putchar(x%10+'0');
 }
 //-block
-int lib[13]={1},N,rep,sum,tm[10],
-    d[13]={
-            0,
-            1,
-            11,
-            111,
-            1111,
-            11111,
-            111111,
-            1111111,
-            11111111,
-            111111111,
-            1111111111,
-            11111111111,
-            111111111111,
-        };
+int T,N,last,now,maxx;
 signed main(){
-    for(int i=1;i<=12;++i){
-        lib[i]=lib[i-1]*i;
-    }
-
-    while(N=read()){
-        rep=1;sum=0;
-        for(int i=0;i<10;++i){
-            tm[i]=0;
+    T=read();
+    while(T--){
+        N=read()-1;last=read();maxx=-300000;
+        while(N--){
+            now=read();
+            if(last-now > maxx){
+                maxx=last-now;
+            }
+            if(last-now < 0){
+                last=now;
+            }
         }
-        for(int i=0;i<N;++i){
-            int tmp=read();
-            ++tm[tmp];
-            sum+=tmp;
-        }
-        for(int i=0;i<10;++i){
-            rep*=lib[tm[i]];
-        }
-        write(lib[N]/rep*sum/N*d[N]);
+        if(maxx<0){putchar('-');maxx=-maxx;}
+        write(maxx);
         putchar('\n');
     }
     return 0;

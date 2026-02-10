@@ -45,7 +45,6 @@
 //#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
 #include <cstdio>
-#define int long long
 using namespace std;
 
 inline int read(){
@@ -66,40 +65,33 @@ inline void write(int x){
     putchar(x%10+'0');
 }
 //-block
+
 signed main(){
-    int W,H,B;
-    while(W=read()){
-        H=read();
-        if(!W && !H){break;}
+    int T=read();
+    for(int cases=1;cases<=T;++cases){
+        int N=read(),dat[N*2]={0};
 
-        int dp[101][101]={0};
-
-        B=read();
-        while(B--){
-            dp[read()][read()]=-1;
+        for(int i=0;i<N;++i){dat[i]=read();}
+        for(int i=0;i<N;++i){
+            dat[i]-=read();
+            dat[i+N]=dat[i];
         }
 
-        dp[0][0]=1;
-        for(int i=0;i<=W;++i){
-            for(int j=0;j<=H;++j){
-                if(dp[i][j]<0){continue;}
-                if(i>0 && dp[i-1][j]>0){
-                    dp[i][j]+=dp[i-1][j];
-                }
-                if(j>0 && dp[i][j-1]>0){
-                    dp[i][j]+=dp[i][j-1];
-                }
+
+        int stp=0,sum=0;
+        for(int i=0;i<N*2;++i){
+            sum+=dat[i];
+            if(sum<0){
+                sum=0;
+                stp=i+1;
             }
-        }
-
-
-
-        if(!dp[W][H]){
-            printf("There is no path.\n");
-        }else if(dp[W][H]==1){
-            printf("There is one path from Little Red Riding Hood's house to her grandmother's house.\n");
-        }else{
-            printf("There are %d paths from Little Red Riding Hood's house to her grandmother's house.\n",dp[W][H]);
+            if(i-stp+1==N){
+                printf("Case %d: Possible from station %d\n",cases,stp+1);
+                break;
+            }else if(stp>=N || i==N*2-1){
+                printf("Case %d: Not possible\n",cases);
+                break;
+            }
         }
     }
     return 0;
