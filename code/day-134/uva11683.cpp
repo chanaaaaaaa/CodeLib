@@ -45,7 +45,6 @@
 //#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
 #include <cstdio>
-#include <vector>
 using namespace std;
 
 inline int read(){
@@ -68,16 +67,23 @@ inline void write(int x){
 //-block
 
 signed main(){
-    int T=read();
-    while(T--){
-        int N=read(),M=read();
-        vector<vector<int>>mp(N,vector<int>(M));
+    int A,C,X,now,last,res;
+    while(true){
+        A=read(),C=read();
+        if(A+C==0){break;}
 
-        for(int i=0;i<N;++i){
-            for(int j=0;j<M;++j){
-                mp[i][j]=read();
+
+        last=read();
+        res=A-last;
+        for(int i=1;i<C;++i){
+            now=read();
+            if(now<last){
+                res+=last-now;
             }
+            last=now;
         }
+        write(res);
+        putchar('\n');
     }
     return 0;
 }
