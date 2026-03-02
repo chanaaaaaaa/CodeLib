@@ -2,10 +2,6 @@
 //#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
 #include<cstdio>
-#include<map>
-#include<vector>
-#include<algorithm>
-#include<string>
 
 #define MAXN 1000000000
 #define MAXP 31623
@@ -22,79 +18,53 @@ inline int read(){
         c=getchar();
     }
     return x;
-}
+}/*
 inline void write(int x){
     if(x>=10){write(x/10);}
     putchar(x%10+'0');
-}
+}*/
 // -block
 bool isprime[MAXP+1];
-vector<int>primes;
-map<int,int>lib;
+int primes[3401],pt=-1;
 inline void form(){
     for(int i=2;i<=MAXP;i++){
-        if(!isprime[i]){primes.emplace_back(i);}
-        for(auto &p:primes){
-            if(i*p>MAXP){break;}
-            isprime[i*p]=true;
-            if(i%p==0){break;}
+        if(!isprime[i]){primes[++pt]=i;}
+        for(int j=0;j<=pt;++j){
+            if(i*primes[j]>MAXP){break;}
+            isprime[i*primes[j]]=true;
+            if(i%primes[j]==0){break;}
         }
     }
 }
 
 inline int slove(int x){
-    for(auto &p:primes){
-        int cnt=0;
-        while(x%p==0){
-            x/=p;
-            cnt++;
+    int res=1,cnt;
+    for(int i=0;i<=pt;++i){
+        cnt=1;
+        while(x%primes[i]==0){
+            x/=primes[i];
+            ++cnt;
         }
         if(cnt){
-            lib[p]=cnt;
+            res*=cnt;
         }
         if(x==1){break;}
     }
-    x=1;
-    for(auto &i:lib){
-        x*=(i.second+1);
-    }
-    return x;
+    return res;
 }
-inline void say(string x){
-    for(int i=0;i<x.size();i++){
-        putchar(x[i]);
-    }
-}
-signed main(void){
-    form();/*
-    for(auto &i:primes){
-        write(i);
-        putchar(' ');
-    }*/
 
+signed main(void){
+    form();
     //-sum primes
-    int T=read(),L,U,maxx=-1,om,tm;
+    int T=read(),L,U,maxx,om,tm;
     while(T--){
         L=read();U=read();maxx=0;
 
-        say("Between ");
-        write(L);
-
-        while(L<=U){
-            tm=slove(L);
-            if(tm>maxx){maxx=tm;om=L;}
-            L++;
-            lib.clear();
+        for(int i=L;i<=U;++i){
+            tm=slove(i);
+            if(tm>maxx){maxx=tm;om=i;}
         }
-
-        say(" and ");
-        write(U);
-        say(", ");
-        write(om);
-        say(" has a maximum of ");
-        write(maxx);
-        say(" divisors.");
-        putchar('\n');
+        printf("Between %d and %d, %d has a maximum of %d divisors.\n",L,U,om,maxx);
     }
     return 0;
 }
