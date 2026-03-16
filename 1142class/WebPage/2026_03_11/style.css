@@ -1,0 +1,33 @@
+body{
+    text-align: center;
+}
+
+table{
+    margin: auto;
+    width: 80%;
+    font-size: 1.5em;
+}
+
+td{
+    border-bottom: 1px solid blue;
+}
+
+tr.online-topic td {
+    color: gray;
+}
+
+.add-topic-section {
+    margin-top: 2em;
+}
+
+.add-topic-section input {
+    padding: 0.5em 1em;
+    font-size: 1em;
+    width: 300px;
+}
+
+.add-topic-section button {
+    padding: 0.5em 1.5em;
+    font-size: 1em;
+    margin-left: 0.5em;
+}

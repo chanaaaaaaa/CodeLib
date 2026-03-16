@@ -1,11 +1,10 @@
-#pragma GCC optimize(1)
+/*#pragma GCC optimize(1)
 #pragma GCC optimize(2)
 #pragma GCC optimize(3)
 #pragma GCC optimize("Ofast")
-#pragma GCC optimize("inilne")
+#pragma GCC optimize("inline")
 #pragma GCC optimize("-fgcse")
 #pragma GCC optimize("-fgcse-lm")
-#pragma GCC optimize("-fipa-sra")
 #pragma GCC optimize("-ftree-vrp")
 #pragma GCC optimize("-fpeephole2")
 #pragma GCC optimize("-ffast-math")
@@ -43,21 +42,45 @@
 #pragma GCC optimize("-fdelete-null-pointer-checks")
 //#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 //#pragma comment(linker, "/stack:200000000")
-#include<cstdio>
-#include<algorithm>
-#include<vector>
-#include<math.h>
+/* Pragma GCC
 
-#define MAXN 200010
-#define int long long
+#define IO ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+#define MEM(_A, _V) memset(_A, _V, sizeof(_A))
+#define ALL(_A) _A.begin(), _A.end()
+#define LB(_A, _V) lower_bound(ALL(_A), _V)
+#define UB(_A, _V) upper_bound(ALL(_A), _V)
+#define as(_A, _V) assign(_A, _V)
+#define pii pair<int, int>
+#define sz size()
+#define cr clear()
+#define rz resize
+#define pb push_back
+//#define pb emplace_back
+#define F first
+#define S second
+#define LL long long
+#define ULL unsigned long long
+/* Self define
+
+const int  d[4][2] = {{1, 0}, {0, 1},  {-1, 0}, {0, -1}};
+const int     MAXN = 1e7 + 50;
+const int      Mod = 1e9 + 7;
+const int      INF = 0x7FFFFFFF;
+const LL     LLINF = 0x7FFFFFFFFFFFFFFF;
+const LL  MEMLLINF = 0x3F3F3F3F3F3F3F3F;
+/* Self Define Const */
+#include <cstdio>
+#include <cstdlib>
+
 using namespace std;
 
 inline int read(){
     int x=0,w=1;
     char c=0;
     while(c<'0' || c>'9'){
-        if(c=='-'){w=-1;}
         c=getchar();
+        if(c==-1){return 0;}
+        if(c=='-'){w=-1;}
     }
     while(c>='0' && c<='9'){
         x=(x<<3)+(x<<1)+c-'0';
@@ -70,73 +93,39 @@ inline void write(int x){
     if(x>=10){write(x/10);}
     putchar(x%10+'0');
 }
-//-block
-int N,M;
-vector<int>seg_tree(MAXN*4);
-vector<int>laz_targ(MAXN*4);
-vector<int>ths_edit(MAXN*4);
-vector<int>input(MAXN);
-
-inline void build(int L,int R,int id){
-    if(L==R){
-        seg_tree[id]=input[L];
-        return;
-    }
-    int m=L+((R-L)>>1);
-
-    build(L,m,id*2);
-    build(m+1,R,id*2+1);
-
-    seg_tree[id]=seg_tree[id*2]+seg_tree[id*2+1];
+/* I/O Optimize */
+inline int min(int a,int b){
+    return a?a>b:b;
 }
-inline void update(int L,int R,int uL,int uR,int id,int val){
-    if(L>=uL&&R<=uR){
-        seg_tree[p]=(R-L+1)*val,laz_targ[id]=c,ths_edit[id]=1;
-        return;
-    }
-    int m=L+((R-L)>>1);
-    if(ths_edit[id]){
-        seg_tree[id*2]=laz_targ[id]*(m-L+1),
-        seg_tree[id*2+1]=laz_targ[id]*(R-m);
-
-        laz_targ[id*2]=laz_targ[id*2+1]=laz_targ[id];
-        ths_edit[id*2]=ths_edit[id*2+1]=1;
-        ths_edit[id]=0;
-    }
-    if(uL<=m){update(L,m,uL,uR,id*2,val);}
-    if(m<uR){update(m+1,R,uL,uR,id*2+1,val);}
-    seg_tree[id]=seg_tree[id*2]+seg_tree[id*2+1];
-}
-inline int query(int L,int R,int qL,int qR,int id){
-    if(L>=qL&&R<=qR){
-        return seg_tree[id];
-    }
-    int m=L+((R-L)>>1),sum=0;
-    if(ths_edit[id]){
-        seg_tree[id*2]=laz_targ[id]*(m-L+1),
-        seg_tree[id*2+1]=laz_targ[id]*(R-m);
-
-        laz_targ[id*2]=laz_targ[id*2+1]=laz_targ[id];
-        ths_edit[id*2]=ths_edit[id*2+1]=1;
-        ths_edit[id]=0;
+inline void solve(){
+    int N=read();
+    int mp[N][N];
+    for(int i=0;i<N;++i){
+        for(int j=0;j<N;++j){
+            mp[i][j]=read();
+        }
     }
 
-    if(qL<=m){sum+=query(L,m,qL,qR,id*2);}
-    if(m<qR){sum+=query(m+1,R,qL,qR,id*2+1);}
-    return sum;
+    for(int k=0;k<N;++k){
+        for(int i=0;i<N;++i){
+            for(int j=0;j<N;++j){
+                if(mp[i][k]==-1 || mp[k][j]==-1){continue;}
+                if(mp[i][j]==-1 || mp[i][j]>mp[i][k]+mp[k][j]-50){
+                    mp[i][j]=mp[i][k]+mp[k][j]-50;
+                }
+            }
+        }
+    }
+
+    int st=read(),ed=read();
+    write(mp[st-1][ed-1]);
+    putchar('\n');
 }
 
-
+/* Programing area*/
 signed main(){
-    N=read();M=read();
-    for(int i=1;i<=N;++i){
-        input[i]=read();
-    }
-    build(1,N,1);
-    int pre=pow(2,ceil(log2(N))+1);
-    for(int i=0;i<pre;++i){
-        write(seg_tree[i]);
-        putchar(' ');
-    }
+    solve();
+    putchar('\n');
+    system("pause");
     return 0;
 }
