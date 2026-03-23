@@ -3,7 +3,7 @@
 using namespace std;
 
 vector<vector<int>>dic;
-int N,a,b,mi=-1,md=3;
+int N,a,b,mi=-1,md=-1;
 
 void dfs(int idx,int father,int depth){
     for(auto i : dic[idx]){
