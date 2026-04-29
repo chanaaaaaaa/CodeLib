@@ -1,4 +1,4 @@
-#pragma GCC optimize("Ofast,fast-math,unroll-loops,no-stack-protector")
+ #pragma GCC optimize("Ofast,fast-math,unroll-loops,no-stack-protector")
 #include <cstdio>
 #include <vector>
 #include <map>
