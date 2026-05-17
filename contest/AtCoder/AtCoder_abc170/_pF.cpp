@@ -28,7 +28,7 @@ inline int dijk(){
     priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>PQ();
 
     dis[sx][sy]=0;
-    PQ.push({0,{sx,sy}});
+    PQ.push(make_pair(0,make_pair(sx,sy)));
     while(!PQ.empty()){
         int dt=PQ.top().first.first;
         int x=PQ.top().second.first;
