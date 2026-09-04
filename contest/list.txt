@@ -10,3 +10,11 @@ on site:
 online:
 	AtCoder -> atcoder.jp
 	NTOU -> 海洋大學期中期末程式競賽(校外組)
+file_name:
+	ContestName_ContestCode_Problems_Grade
+	
+	AtCoder競賽 abc469場 問題C Accepted
+	Ex: AtCoder_abc469_pC_AC
+	
+	NTOU競賽 2025-11-08場 問題E After_Contest
+	Ex: NTOU_2025-11-08_pR_AF
