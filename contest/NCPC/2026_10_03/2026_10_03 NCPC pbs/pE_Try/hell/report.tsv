@@ -1,0 +1,25 @@
+file	n	m	K	ans	kruskal_tree	msf_induced	tag
+01_k_eq_n	12	66	12	0	66	0	k=n => 0
+02_impossible_edgeless	12	0	6	-1	0	-1	K < CC, no edges
+03_impossible_below_cc	12	4	7	-1	100	-1	K < CC, matching
+04_k1_pay_all_edges	12	66	1	2211	66	2211	K=1 pay every edge
+05_msf_keeps_heavy_chord	6	7	3	304	103	1103	split heavy triangle
+06_msf_keeps_heavy_chord_n12	12	13	9	304	103	1103	same, n=12 connected
+07_k_eq_cc_pay_chords	9	9	3	2778	75	2778	K=CC pay chords
+08_impossible_three_triangles	9	9	2	-1	75	-1	K=CC-1
+09_split_one_triangle	9	9	4	1861	60	1861	K=CC+1 choose which
+10_two_cliques_k2	12	31	2	21001	9001	25001	bridge vs balanced cut
+11_two_cliques_k3	12	31	3	12001	8001	21001	bridge province + two pures
+12_two_cliques_k4	12	31	4	9001	7001	18001	two cliques K=4
+13_light_edges_share_vertex	6	7	4	4	3	1003	shared endpoint
+14_light_edges_share_vertex_n12	12	13	10	4	3	1003	shared endpoint n=12
+15_bipartite_heavy_fourth	6	6	3	7	6	806	K22 heavy edge
+16_bipartite_heavy_fourth_n12	12	12	9	7	6	806	K22 heavy edge n=12
+17_uniform_complete_k1	12	66	1	66000	11000	66000	66*1000
+18_uniform_complete_k5	12	66	5	9000	7000	28000	balanced 3,3,2,2,2
+19_uniform_complete_k12	12	66	12	0	11000	0	K=n uniform
+20_lex_complete_best_gap	12	66	2	979	55	1705	lex complete max gap
+21_lex_complete_k6	12	66	6	177	21	406	lex star skeleton K=6
+22_random_n12	12	59	2	9848	798	22832	random seed 20261003
+23_random_n12	12	58	3	4336	637	14897	random seed 20261003
+24_random_n12	12	55	3	3675	747	17105	random seed 20261003
